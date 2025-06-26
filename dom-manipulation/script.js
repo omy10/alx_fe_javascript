@@ -6,7 +6,7 @@ let quotes = [
   
   let quoteDisplay;
   
-  function displayRandomQuote() {
+  function showRandomQuote() {
     if (quotes.length === 0) {
       quoteDisplay.innerHTML = "<em>No quotes available. Add some!</em>";
       return;
