@@ -1,26 +1,24 @@
-// Step 1: Initial quotes array
 let quotes = [
     { text: "Believe you can and you're halfway there.", category: "Motivation" },
     { text: "Do or do not. There is no try.", category: "Inspiration" },
-    { text: "Simplicity is the soul of efficiency.", category: "Work" },
+    { text: "Simplicity is the soul of efficiency.", category: "Work" }
   ];
   
-  // Step 2: Declare reference to quote display container
   let quoteDisplay;
   
-  // Step 3: Show a random quote
-  function showRandomQuote() {
+  function displayRandomQuote() {
     if (quotes.length === 0) {
-      quoteDisplay.textContent = "No quotes available. Add some!";
+      quoteDisplay.innerHTML = "<em>No quotes available. Add some!</em>";
       return;
     }
   
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const quote = quotes[randomIndex];
-    quoteDisplay.textContent = `"${quote.text}" — (${quote.category})`;
+    
+    //  Use innerHTML instead of textContent
+    quoteDisplay.innerHTML = `<p>"${quote.text}"</p><small>— ${quote.category}</small>`;
   }
   
-  // Step 4: Add a new quote
   function addQuote() {
     const textInput = document.getElementById('newQuoteText');
     const categoryInput = document.getElementById('newQuoteCategory');
@@ -41,9 +39,8 @@ let quotes = [
     alert("Quote added successfully!");
   }
   
-  // Step 5: Setup event listeners on DOM load
   document.addEventListener('DOMContentLoaded', () => {
-    quoteDisplay = document.getElementById('quoteDisplay'); // ✅ Fixes the undefined reference
-    document.getElementById('newQuote').addEventListener('click', showRandomQuote);
+    quoteDisplay = document.getElementById('quoteDisplay');
+    document.getElementById('newQuote').addEventListener('click', displayRandomQuote);
   });
   
