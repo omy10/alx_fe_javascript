@@ -1,11 +1,14 @@
-// Step 2: Create an initial array of quote objects
+// Step 1: Initial quotes array
 let quotes = [
     { text: "Believe you can and you're halfway there.", category: "Motivation" },
     { text: "Do or do not. There is no try.", category: "Inspiration" },
     { text: "Simplicity is the soul of efficiency.", category: "Work" },
   ];
   
-  // Step 2: Show a random quote
+  // Step 2: Declare reference to quote display container
+  let quoteDisplay;
+  
+  // Step 3: Show a random quote
   function showRandomQuote() {
     if (quotes.length === 0) {
       quoteDisplay.textContent = "No quotes available. Add some!";
@@ -17,13 +20,7 @@ let quotes = [
     quoteDisplay.textContent = `"${quote.text}" — (${quote.category})`;
   }
   
-  // Step 2: Listen for DOM load and setup events
-  document.addEventListener('DOMContentLoaded', () => {
-    const newQuoteBtn = document.getElementById('newQuote');
-    newQuoteBtn.addEventListener('click', showRandomQuote);
-  });
-  
-  // Step 3: Function to add a new quote from input
+  // Step 4: Add a new quote
   function addQuote() {
     const textInput = document.getElementById('newQuoteText');
     const categoryInput = document.getElementById('newQuoteCategory');
@@ -32,19 +29,21 @@ let quotes = [
     const quoteCategory = categoryInput.value.trim();
   
     if (quoteText === "" || quoteCategory === "") {
-      alert("Please enter both quote and category.");
+      alert("Please enter both a quote and a category.");
       return;
     }
   
-    // Create new quote object and add to quotes array
     const newQuote = { text: quoteText, category: quoteCategory };
     quotes.push(newQuote);
   
-    // Clear input fields
     textInput.value = "";
     categoryInput.value = "";
-  
-    // Provide user feedback
     alert("Quote added successfully!");
   }
+  
+  // Step 5: Setup event listeners on DOM load
+  document.addEventListener('DOMContentLoaded', () => {
+    quoteDisplay = document.getElementById('quoteDisplay'); // ✅ Fixes the undefined reference
+    document.getElementById('newQuote').addEventListener('click', showRandomQuote);
+  });
   
