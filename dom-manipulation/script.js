@@ -52,8 +52,8 @@ function showRandomQuote() {
   document.getElementById('quoteDisplay').innerHTML = `"${rand.text}" — ${rand.category}`;
 }
 
-// Add new quote
-function addQuote() {
+// ✅ Add new quote with POST request
+async function addQuote() {
   const text = document.getElementById('newQuoteText').value.trim();
   const category = document.getElementById('newQuoteCategory').value.trim();
   if (text && category) {
@@ -64,6 +64,27 @@ function addQuote() {
     showNotification('Quote added successfully.');
     document.getElementById('newQuoteText').value = '';
     document.getElementById('newQuoteCategory').value = '';
+
+    // ✅ POST to server
+    try {
+      const response = await fetch(SERVER_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newQuote)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Quote successfully posted:', result);
+      } else {
+        console.error('Failed to post quote');
+      }
+    } catch (error) {
+      console.error('Error posting quote:', error);
+    }
+
   } else {
     alert('Please enter both quote and category.');
   }
@@ -93,7 +114,7 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// ✅ Async/Await server quote fetch
+// Async fetch from server
 async function fetchQuotesFromServer() {
   try {
     const response = await fetch(`${SERVER_URL}?_limit=5`, {
