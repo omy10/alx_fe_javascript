@@ -145,4 +145,42 @@ window.addEventListener('DOMContentLoaded', () => {
   showRandomQuote();
   document.getElementById('newQuote').addEventListener('click', showRandomQuote);
   setInterval(syncWithServer, SYNC_INTERVAL);
+
+  // Simulated server fetch
+function fetchQuotesFromServer() {
+    fetch("https://jsonplaceholder.typicode.com/posts?_limit=5")
+      .then((response) => response.json())
+      .then((data) => {
+        // Convert the mock posts into quote format
+        const fetchedQuotes = data.map((item) => ({
+          text: item.title,
+          category: "Server",
+        }));
+  
+        // Merge with local quotes, avoiding duplicates
+        let currentQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
+  
+        fetchedQuotes.forEach((quote) => {
+          const exists = currentQuotes.some((q) => q.text === quote.text);
+          if (!exists) {
+            currentQuotes.push(quote);
+          }
+        });
+  
+        // Update local storage and UI
+        localStorage.setItem("quotes", JSON.stringify(currentQuotes));
+        quotes = currentQuotes;
+        populateCategories();
+        filterQuotes();
+  
+        console.log("Quotes synced from server.");
+      })
+      .catch((error) => {
+        console.error("Error fetching server quotes:", error);
+      });
+  }
+  
+  // Periodic fetch every 60 seconds
+  setInterval(fetchQuotesFromServer, 60000);
+  
 });
