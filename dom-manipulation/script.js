@@ -52,7 +52,7 @@ function showRandomQuote() {
   document.getElementById('quoteDisplay').innerHTML = `"${rand.text}" — ${rand.category}`;
 }
 
-// Add new quote
+// ✅ Add new quote with POST request
 async function addQuote() {
   const text = document.getElementById('newQuoteText').value.trim();
   const category = document.getElementById('newQuoteCategory').value.trim();
@@ -65,7 +65,7 @@ async function addQuote() {
     document.getElementById('newQuoteText').value = '';
     document.getElementById('newQuoteCategory').value = '';
 
-    // POST to server
+    // ✅ POST to server
     try {
       const response = await fetch(SERVER_URL, {
         method: 'POST',
@@ -114,7 +114,7 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// Fetch from server and sync
+// Async fetch from server
 async function fetchQuotesFromServer() {
   try {
     const response = await fetch(`${SERVER_URL}?_limit=5`, {
@@ -147,17 +147,12 @@ async function fetchQuotesFromServer() {
       quotes = currentQuotes;
       populateCategories();
       filterQuotes();
-      showNotification("New quotes synced from server.");
+      showNotification("Quotes synced with server!");
     }
 
   } catch (error) {
     console.error("Error fetching server quotes:", error);
   }
-}
-
-// ✅ Wrapper function to satisfy validator
-function syncQuotes() {
-  fetchQuotesFromServer();
 }
 
 // Show notification
